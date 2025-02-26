@@ -27,7 +27,8 @@ This fork enables control of Warema blinds via 433&nbsp;MHz signals using an ESP
 - [Usage](#usage)
 - [Topics and Command Payloads](#topics-and-command-payloads)
 - [Troubleshooting](#troubleshooting)
-
+- [Change Log](#change-log)
+- [Roadmap](#roadmap)
 ---
 
 ## Hardware Setup
@@ -182,7 +183,7 @@ When the payload is published to cmnd/rf-warema-bridge/data, the ESP32 will send
 
 ---
 
-##Troubleshooting##
+## Troubleshooting
 1. **No MQTT Connection**
 - Check serial monitor for error messages.
 - Make sure you have the correct broker address, port, username, and password.
@@ -197,6 +198,22 @@ When the payload is published to cmnd/rf-warema-bridge/data, the ESP32 will send
 
 4. LEDs Not Working
 - Check pin definitions and wiring of resistors and LEDs.
+
+---
+
+## Change Log
+### [0.0.1] - 2025-02-26
+___Note: this is an untested version___
+- Converted code to be compatible with ESP32
+- Improved code to prevent memory leaks
+- Minor improvements
+
+---
+
+## Roadmap
+- Add [OTA](https://docs.arduino.cc/arduino-cloud/features/ota-getting-started/) support with NTP time based updates
+- Bugfixes
+- Performance
 
 ---
 
