@@ -4,60 +4,69 @@
 
 class RCSwitchWarema : public RCSwitch
 {
-  using Base=RCSwitch;
+  using Base = RCSwitch;
   
-  public:
-    void sendMC(char* Code,int dLen,int sLen,int repeat,int delay);
+public:
+    void sendMC(const char* code, int dLen, int sLen, int repeat, int delayUs);
     void enableTransmit(int nTransmitterPin);
-  
-  private:
-    int m_transmitterPin{};
-};
 
+private:
+    int m_transmitterPin{ -1 };
+};
 
 void RCSwitchWarema::enableTransmit(int nTransmitterPin)
 {
-  m_transmitterPin = nTransmitterPin;
-  
-  Base::enableTransmit(nTransmitterPin);
+    m_transmitterPin = nTransmitterPin;
+    Base::enableTransmit(nTransmitterPin);
 }
 
-void RCSwitchWarema::sendMC(char* sCodeWord, int dataLength, int syncLength, int sendCommand, int sendDelay  )
+void RCSwitchWarema::sendMC(const char* sCodeWord, 
+                            int dataLength, 
+                            int syncLength, 
+                            int sendCommand, 
+                            int sendDelay )
 {
+    // For each repeat
+    for (int nRepeat = 0; nRepeat < sendCommand; nRepeat++)
+    {
+        // Start low
+        digitalWrite(m_transmitterPin, LOW);  
 
-  for (int nRepeat=0; nRepeat<sendCommand; nRepeat++)
-  {
-    digitalWrite(this->m_transmitterPin, LOW);  
-    
-    for (int i = 0; i < strlen(sCodeWord); i++) {
-        switch (sCodeWord[i]) {
-          case 's':
-            digitalWrite(this->m_transmitterPin, LOW);
-            delayMicroseconds(syncLength);
-            break;
+        // Transmit each character
+        int len = strlen(sCodeWord);
+        for (int i = 0; i < len; i++) {
+            switch (sCodeWord[i]) {
+                case 's':
+                    digitalWrite(m_transmitterPin, LOW);
+                    delayMicroseconds(syncLength);
+                    break;
 
-          case 'S':
-            digitalWrite(this->m_transmitterPin, HIGH);
-            delayMicroseconds(syncLength);
-            break;
+                case 'S':
+                    digitalWrite(m_transmitterPin, HIGH);
+                    delayMicroseconds(syncLength);
+                    break;
 
-          case '0':
-            digitalWrite(this->m_transmitterPin, HIGH);
-            delayMicroseconds(dataLength/2);
-            digitalWrite(this->m_transmitterPin, LOW);
-            delayMicroseconds(dataLength/2);
-            break;
+                case '0':
+                    digitalWrite(m_transmitterPin, HIGH);
+                    delayMicroseconds(dataLength / 2);
+                    digitalWrite(m_transmitterPin, LOW);
+                    delayMicroseconds(dataLength / 2);
+                    break;
 
-          case '1':
-            digitalWrite(this->m_transmitterPin, LOW);
-            delayMicroseconds(dataLength/2);
-            digitalWrite(this->m_transmitterPin, HIGH);
-            delayMicroseconds(dataLength/2);
-            break;
+                case '1':
+                    digitalWrite(m_transmitterPin, LOW);
+                    delayMicroseconds(dataLength / 2);
+                    digitalWrite(m_transmitterPin, HIGH);
+                    delayMicroseconds(dataLength / 2);
+                    break;
+            }
         }
-      }
-      digitalWrite(this->m_transmitterPin, LOW);    
-      if (nRepeat != sendCommand-1)
-      delayMicroseconds(sendDelay);
-  }
+        // End low
+        digitalWrite(m_transmitterPin, LOW);   
+
+        // If not the last repeat, wait the specified delay
+        if (nRepeat != sendCommand - 1) {
+            delayMicroseconds(sendDelay);
+        }
+    }
 }

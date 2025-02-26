@@ -1,0 +1,30 @@
+# ---- Arduino / ESP32 build artifacts ----
+*.bin
+*.elf
+*.hex
+*.map
+*.eep
+*.zip
+*.gz
+*.bak
+*.tmp
+*.d
+build/
+.pioenvs/
+.piolibdeps/
+.arduinoIDE/
+
+# ---- VSCode and other IDE files ----
+.vscode/
+*.swp
+*.swo
+
+# ---- OS-specific files ----
+.DS_Store
+Thumbs.db
+
+# ---- Private credentials file ----
+secure.h
+
+# You can optionally provide a secure.h.example (or secure.h.template)
+# with dummy placeholders for reference and keep the real secure.h private.

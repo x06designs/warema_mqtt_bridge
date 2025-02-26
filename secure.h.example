@@ -1,0 +1,9 @@
+#pragma once
+
+// Wi-Fi credentials
+static const char* ssid            = "YourWiFiSSID";
+static const char* password        = "YourWiFiPassword";
+
+// MQTT credentials
+static const char* mqtt_username   = "YourMqttUsername";
+static const char* mqtt_password   = "YourMqttPassword";
